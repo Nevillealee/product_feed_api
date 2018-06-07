@@ -10,16 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_24_214550) do
+ActiveRecord::Schema.define(version: 2018_05_30_153428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "options", force: :cascade do |t|
+    t.bigint "product_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "name"
+    t.string "values"
+    t.string "images"
+    t.string "image"
+    t.integer "position"
+    t.index ["product_id"], name: "index_options_on_product_id"
+  end
+
   create_table "products", force: :cascade do |t|
-    t.string "title", null: false
-    t.string "body_html", default: ""
-    t.string "vendor", null: false
-    t.string "product_type", default: "", null: false
+    t.string "title"
+    t.string "body_html"
+    t.string "vendor"
+    t.string "product_type"
     t.string "handle"
     t.string "template_suffix"
     t.string "published_scope"
@@ -28,8 +40,29 @@ ActiveRecord::Schema.define(version: 2018_05_24_214550) do
     t.string "tags"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "options"
-    t.string "variants"
   end
 
+  create_table "variants", force: :cascade do |t|
+    t.string "title"
+    t.string "option1"
+    t.string "sku"
+    t.string "position"
+    t.string "price"
+    t.string "barcode"
+    t.string "compare_at_price"
+    t.string "fulfillment_service"
+    t.bigint "image_id"
+    t.bigint "grams"
+    t.string "inventory_management"
+    t.string "inventory_policy"
+    t.string "inventory_quantity"
+    t.string "weight_unit"
+    t.bigint "product_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["product_id"], name: "index_variants_on_product_id"
+  end
+
+  add_foreign_key "options", "products"
+  add_foreign_key "variants", "products"
 end

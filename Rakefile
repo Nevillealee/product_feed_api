@@ -13,4 +13,14 @@ namespace :shopify do
     myfeed = Feed.new(*args)
     myfeed.download
   end
+
+  desc "pulls products, variants, and options"
+  task :product_pull do
+    if Product.exists?
+      ActiveRecord::Base.connection.execute("TRUNCATE products CASCADE;")
+      ProductAPI.active_to_db
+    else
+      ProductAPI.active_to_db
+    end
+  end
 end
